@@ -706,8 +706,12 @@ class ScriptDirectory:
 
         norm_path = os.path.normpath(os.path.abspath(version_path))
         for vers_path in self._version_locations:
-            if os.path.normpath(vers_path) == norm_path:
-                break
+            if self.recursive_version_locations:
+                if norm_path.startswith(os.path.normpath(vers_path)):
+                    break
+            else:
+                if os.path.normpath(vers_path) == norm_path:
+                    break
         else:
             raise util.CommandError(
                 "Path %s is not represented in current "
